@@ -24,6 +24,7 @@ In above code, I am calling my `profile = Profile.last` and assinging `profile.a
 # Example with multiple images:
 ```ruby
 REGEXP = /\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)/m
+user = User.find_by_id(params[:user_id])
 params[:receipt_codes].each_with_index do |code,index|
   new_code = code.match(REGEXP) || []
   new_code = new_code[2] if new_code[2].present?
@@ -31,7 +32,6 @@ params[:receipt_codes].each_with_index do |code,index|
     data.class.class_eval { attr_accessor :original_filename, :content_type }
     data.original_filename = params[:file_names][index]
     data.content_type = params[:file_types][index]
-    user = User.find_by_id(params[:user_id])
     user.receipts.create({receipt: data})
   end
 end
